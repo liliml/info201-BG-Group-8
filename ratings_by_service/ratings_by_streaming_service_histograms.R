@@ -26,57 +26,48 @@ streaming %>%
   arrange(desc(modified_ratings)) %>% 
   select(Title,"Rotten Tomatoes", modified_ratings)
 
-## Variables
-netflix_data <- streaming %>% 
-  filter(!is.na(modified_ratings)) %>% 
-  filter(Netflix == 1) %>% 
-  select(modified_ratings)
-
-hulu_data <- streaming %>% 
-  filter(!is.na(modified_ratings)) %>% 
-  filter(Hulu == 1) %>% 
-  select(modified_ratings)
-
-primevideo_data <- streaming %>% 
-  filter(!is.na(modified_ratings)) %>% 
-  filter(`Prime Video` == 1) %>% 
-  select(modified_ratings)
-
-disneyplus_data <- streaming %>% 
-  filter(!is.na(modified_ratings)) %>% 
-  filter(`Disney+` == 1) %>% 
-  select(modified_ratings)
-
-
 ## Making plots
 ## THESE ARE THE MAIN HISTOGRAMS FOR THE SHINY APP
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(Netflix == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count", fill = "red")+
-  labs(title="Netflix")
+  geom_histogram(stat = "count", aes(fill = ..x..))+
+  scale_fill_gradient(low="red",high="green")+
+  labs(title="Netflix",
+       x = "Rotten Tomatoes Rating",
+       y = 'Movie count')
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(Hulu == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count", fill = "green")+
-  labs(title="Hulu")
+  geom_histogram(stat = "count", aes(fill = ..x..))+
+  scale_fill_gradient(low="red",high="green")+
+  labs(title="Hulu",
+       x = "Rotten Tomatoes Rating",
+       y = 'Movie count')
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(`Prime Video` == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count", fill = "blue")+
-  labs(title="Prime Video")
+  geom_histogram(stat = "count", aes(fill = ..x..))+
+  scale_fill_gradient(low="red",high="green")+
+  labs(title="Prime Video",
+       x = "Rotten Tomatoes Rating",
+       y = 'Movie count')
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(`Disney+` == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count", fill = "darkblue")+
-  labs(title="Disney+")
+  geom_histogram(stat = "count", aes(fill = ..x..))+
+  scale_fill_gradient(low="red",high="green")+
+  labs(title="Disney+",
+       x = "Rotten Tomatoes Rating",
+       y = 'Movie count')
+
 
 ## Everything under this is extra stuff for possible other interactive elements
 
@@ -106,6 +97,27 @@ streaming %>%
   filter(`Disney+` == 1) %>% 
   ggplot(aes(x = modified_ratings))+
   geom_boxplot(fill = "darkblue")
+
+## Variables
+netflix_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Netflix == 1) %>% 
+  select(modified_ratings)
+
+hulu_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Hulu == 1) %>% 
+  select(modified_ratings)
+
+primevideo_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Prime Video` == 1) %>% 
+  select(modified_ratings)
+
+disneyplus_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Disney+` == 1) %>% 
+  select(modified_ratings)
 
 ## Plot that depicts all, but idk how to make it so it could appear
 ## and not appear with a toggle like function for shiny
