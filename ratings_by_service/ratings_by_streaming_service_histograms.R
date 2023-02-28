@@ -27,27 +27,99 @@ streaming %>%
   arrange(desc(modified_ratings)) %>% 
   select(Title,"Rotten Tomatoes", modified_ratings)
 
+## Variables
+netflix_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Netflix == 1) %>% 
+  select(modified_ratings)
+
+hulu_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Hulu == 1) %>% 
+  select(modified_ratings)
+
+primevideo_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Prime Video` == 1) %>% 
+  select(modified_ratings)
+
+disneyplus_data <- streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Disney+` == 1) %>% 
+  select(modified_ratings)
+
+
 ## Making plots
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(Netflix == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count")
+  geom_histogram(stat = "count", fill = "red")+
+  labs(title="Netflix")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(Hulu == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count")
+  geom_histogram(stat = "count", fill = "green")+
+  labs(title="Hulu")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(`Prime Video` == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count")
+  geom_histogram(stat = "count", fill = "blue")+
+  labs(title="Prime Video")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(`Disney+` == 1) %>% 
   ggplot(aes(x = modified_ratings))+
-  geom_histogram(stat = "count")
+  geom_histogram(stat = "count", fill = "darkblue")+
+  labs(title="Disney+")
+
+## Making accompanying boxplot to display with plot
+## These would be toggled on and off and would display in one area on top of
+## each other for easy comparison of medians, range, outliers, etc.
+streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Netflix == 1) %>% 
+  ggplot(aes(x = modified_ratings))+
+  geom_boxplot(fill = "red")
+  
+streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(Hulu == 1) %>% 
+  ggplot(aes(x = modified_ratings))+
+  geom_boxplot(fill = "green")
+
+streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Prime Video` == 1) %>% 
+  ggplot(aes(x = modified_ratings))+
+  geom_boxplot(fill = "blue")
+
+streaming %>% 
+  filter(!is.na(modified_ratings)) %>% 
+  filter(`Disney+` == 1) %>% 
+  ggplot(aes(x = modified_ratings))+
+  geom_boxplot(fill = "darkblue")
+
+## Plot that depicts all, but idk how to make it so it could appear
+## and not appear with a toggle like function for shiny
+ggplot() +
+  geom_boxplot(data = netflix_data, aes(x = modified_ratings), width=0.2, fill="red")+
+  geom_boxplot(data = hulu_data, aes(x = modified_ratings),fill="green",
+               width=0.2,
+               position = position_nudge(y=0.2))+
+  geom_boxplot(data = primevideo_data, aes(x = modified_ratings),fill="blue",
+               width=0.2,
+               position = position_nudge(y=0.4))+
+  geom_boxplot(data = disneyplus_data, aes(x = modified_ratings),fill="darkblue",
+               width=0.2,
+               position = position_nudge(y=0.6))+
+  labs(title="Streaming Services boxplots",
+       subtitle = "Looking at the movie catalog in each service and their overall Rotten Tomatoes ratings.",
+       x = "Rotten Tomatoes rating")
+
+               
