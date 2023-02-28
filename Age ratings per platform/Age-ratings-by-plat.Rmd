@@ -1,0 +1,26 @@
+---
+title: "Untitled"
+author: "Z"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r, message = FALSE}
+library(tidyverse)
+library(stringr)
+stream <- read_delim("../Data/streaming-platform-data.csv")
+```
+
+Age ratings by platform:
+```{r}
+ageDemograph <- stream %>% 
+  filter(Age != "NA") %>% 
+  group_by(Age) %>% 
+  summarize(Netflix = sum(Netflix), Hulu = sum(Hulu), `Prime Video` = sum(`Prime Video`), `Disney+` = sum(`Disney+`))
+
+ageDemograph
+
+ggplot(ageDemograph) +
+  geom_bar(mapping = aes(x = class)) 
+```
+
