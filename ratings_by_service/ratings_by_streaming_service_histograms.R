@@ -3,7 +3,6 @@ library(tidyverse)
 library(stringr)
 
 streaming <- read_delim("data/streaming-platform-data.csv")
-View(streaming)
 
 ## Question: 
 ## Typical rating of movies on each streaming platform 
@@ -50,6 +49,7 @@ disneyplus_data <- streaming %>%
 
 
 ## Making plots
+## THESE ARE THE MAIN HISTOGRAMS FOR THE SHINY APP
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
   filter(Netflix == 1) %>% 
@@ -77,6 +77,8 @@ streaming %>%
   ggplot(aes(x = modified_ratings))+
   geom_histogram(stat = "count", fill = "darkblue")+
   labs(title="Disney+")
+
+## Everything under this is extra stuff for possible other interactive elements
 
 ## Making accompanying boxplot to display with plot
 ## These would be toggled on and off and would display in one area on top of
