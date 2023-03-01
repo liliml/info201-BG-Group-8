@@ -15,7 +15,7 @@ streaming <- read_delim("data/streaming-platform-data.csv")
 # The height of each bin corresponds to how many movies have gotten that rating.
 # The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings.
 
-# Comparing the four streaming service histograms, all streaming services have a wide variety and mostly follow a normal distribution shape.
+# Comparing the four streaming service histograms, all streaming services have a variety of ratings and mostly follow a normal distribution shape.
 # All histograms all have some outlier data points where there are a handful of very low rated movies in their catalogs.
 # This is one area where start up companies making a streaming service that is competitive with the current market could improve on.
 # Netflix seems to have the widest range of ratings in their movie catalog, while Hulu seem to have the most narrow.
