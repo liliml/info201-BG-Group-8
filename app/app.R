@@ -23,11 +23,9 @@ ui <- fluidPage(
     ),
     
     # Show a plot of the generated distribution
-    mainPanel(
-      tabsetPanel(
-        tabPanel("Histogram", plotOutput("distPlot"),
+    mainPanel(plotOutput("distPlot"),
   
-        # Histogram descriptions and analysis
+        # Histogram description
         p("Histogram Description:"),
         p("These histograms contain data of each streaming service's movie catalog in 2021 to early 2022. 
         The histogram's bins on the x axis represent the ",
@@ -35,7 +33,16 @@ ui <- fluidPage(
         "given to each movie. Ratings are points from 0 to 100.
         The height of each bin corresponds to how many movies have gotten that rating.
         The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings."),
-        p("Histogram Analysis:"),
+        
+        # Table
+        tableOutput("table"),
+        
+        # Table Description
+        p("Table Description:"),
+        p("This table shows how many movies were available on each streaming service in 2021 to early 2022."),
+        
+        # Analysis
+        p("Analysis:"),
         p("All streaming services have a variety of ratings and mostly follow a normal distribution shape.
         All histograms have some outlier data points where there are a handful of very low rated movies in their catalogs.
         This is one area where start up companies making a streaming service that is competitive with the current market could improve on."),
@@ -47,16 +54,9 @@ ui <- fluidPage(
         p("There is a trend with larger movie catalogs and greater diversity of ratings, but moreso leaning towards the lower ratings spectrum while the smaller catalogs lean more towards the higher spectrum even with a more narrow ratings range.
         It is possible that Hulu and Disney+ are more selective with what movies are on their catalog, hence why there are less but are of higher Rotten Tomatoes ratings. 
         For start up companies, it's important to recognize the balance between having a large and diverse catalog of movies and a smaller scope that are of higher quality.")
-      ),
-      
-      # Table of total movies for each streaming service
-      tabPanel("Table", tableOutput("table"),
-               p("Table Description:"),
-               p("This table shows how many movies were available on each streaming service in 2021 to early 2022."))
       )
     )
   )
-)
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
