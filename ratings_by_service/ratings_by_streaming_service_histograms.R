@@ -11,7 +11,7 @@ streaming <- read_delim("data/streaming-platform-data.csv")
 
 ## Plot description and analysis:
 # These histograms contain data of each streaming service's movie catalog in 2021 to early 2022.
-# The histogram's bins on the x axis represent the Rotten Tomatoes rating given to each movie.
+# The histogram's bins on the x axis represent the Rotten Tomatoes rating given to each movie. Ratings are points from 0 to 100.
 # The height of each bin corresponds to how many movies have gotten that rating.
 # The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings.
 
@@ -66,7 +66,8 @@ streaming %>%
   scale_fill_gradient(low="red",high="green")+
   labs(title="Netflix",
        x = "Rotten Tomatoes Rating",
-       y = 'Movie count')
+       y = 'Movie count',
+       fill = "Ratings")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
@@ -76,7 +77,8 @@ streaming %>%
   scale_fill_gradient(low="red",high="green")+
   labs(title="Hulu",
        x = "Rotten Tomatoes Rating",
-       y = 'Movie count')
+       y = 'Movie count',
+       fill = "Ratings")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
@@ -86,7 +88,8 @@ streaming %>%
   scale_fill_gradient(low="red",high="green")+
   labs(title="Prime Video",
        x = "Rotten Tomatoes Rating",
-       y = 'Movie count')
+       y = 'Movie count',
+       fill = "Ratings")
 
 streaming %>% 
   filter(!is.na(modified_ratings)) %>% 
@@ -96,7 +99,8 @@ streaming %>%
   scale_fill_gradient(low="red",high="green")+
   labs(title="Disney+",
        x = "Rotten Tomatoes Rating",
-       y = 'Movie count')
+       y = 'Movie count',
+       fill = "Ratings")
 
 
 ## Everything under this is extra stuff for possible other interactive elements
