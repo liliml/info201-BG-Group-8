@@ -18,9 +18,11 @@ ui <- fluidPage(
   p("There are", nrow(fullData), "movies"),
   sidebarLayout(
     sidebarPanel(
-      sliderInput("year", "Year", min = min(fullData$Year), max = max(fullData$Year), min(fullData$Year))
+      sliderInput("year", "Year", min = min(fullData$Year), max = max(fullData$Year), value = min(fullData$Year)),
       #sliderInput("year", "Year", min = min(moviesPerYear$Year), max = max(moviesPerYear$Year), min(moviesPerYear$Year))
-
+    #   selectInput(inputId = "y", label = "Y axis", 
+    #               chocies = c(""))
+    #   checkboxInput("services", "select services to see data from", value = TRUE)
     ),
     mainPanel(
       tabsetPanel(
@@ -29,7 +31,7 @@ ui <- fluidPage(
         tabPanel("Movie Data By Year", dataTableOutput("movieDataByYear")),
         tabPanel("Text", textOutput("stuff")), 
         tabPanel("Plot", titlePanel("Movies Per Streaming Service Per Year"), 
-                plotOutput("plot1")), 
+                plotOutput("plot1")) 
       )
       # dataTableOutput("data1"),
       # plotOutput("data2")
@@ -44,6 +46,8 @@ server <- function(input, output) {
       #sample_n(6)
     
   })
+  
+  # updateCheckboxGroupInput()
   
   output$plot1 <- renderPlot({
     # #WHY WON'T Y VALUE CHANGE???? X VALUE CHANGES? AND WHAT ARE THE GREY MARKS??? AND HOW DO I GET MY DATA TO ACCURATELY SHOW???? SINCE ON SOME STREAMING PLATFOMRS SOME YEARS SHOULD 
