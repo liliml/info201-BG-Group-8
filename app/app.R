@@ -24,7 +24,26 @@ ui <- fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("distPlot"),
+      
+      # Histogram descriptions and analysis
+      p("Histogram Description:"),
+      p("These histograms contain data of each streaming service's movie catalog in 2021 to early 2022. 
+      The histogram's bins on the x axis represent the Rotten Tomatoes rating given to each movie. Ratings are points from 0 to 100.
+      The height of each bin corresponds to how many movies have gotten that rating.
+      The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings."),
+      p("Histogram Analysis:"),
+      p("Comparing the four streaming service histograms, all streaming services have a variety of ratings and mostly follow a normal distribution shape.
+      All histograms have some outlier data points where there are a handful of very low rated movies in their catalogs.
+      This is one area where start up companies making a streaming service that is competitive with the current market could improve on.
+      Netflix seems to have the widest range of ratings in their movie catalog, while Hulu seem to have the most narrow."),
+      p("An explanation for this could be that the size of Netflix's catalog is much larger than Hulu, almost having 1500 more movies.
+      Hulu appears to have the median with the highest rating as it's center is around the 60/100 Rotten Tomatoes rating. Disney+ also has a higher median than Netflix and Prime Video.
+      The service with the lowest median rating is Prime Video, with it's histogram looking to be skewed to the right. 
+      Prime Video also seems to have the lowest percentage of movies in its catalog that are highly rated as it's bins are the least green shaded and lean more towards red/yellow.
+      There is a trend with larger movie catalogs and greater diversity of ratings, but moreso leaning towards the lower ratings spectrum while the smaller catalogs lean more towards the higher spectrum even with a more narrow ratings range.
+      It is possible that Hulu and Disney+ are more selective with what movies are on their catalog, hence why there are less but are of higher Rotten Tomatoes ratings. 
+      For start up companies, it's important to recognize the balance between having a large and diverse catalog of movies and a smaller scope that are of higher quality.")
     )
   )
 )
@@ -51,7 +70,8 @@ server <- function(input, output, session) {
       scale_fill_gradient(low="red",high="green")+
       labs(title=service,
            x = "Rotten Tomatoes Rating",
-           y = 'Movie count')
+           y = 'Movie count',
+           fill = "Ratings")
   })
 }
 
