@@ -20,7 +20,17 @@ ageDemograph <- stream %>%
 
 ageDemograph
 
-ggplot(ageDemograph) +
-  geom_bar(mapping = aes(x = class)) 
+ggplot(data = ageDemograph,
+       aes(x = Age, y = Netflix, fill = as.factor(Age))) +
+      geom_bar(stat = "identity", position = "dodge") 
 ```
 
+```{r}
+ageDemograph <- stream %>% 
+  filter(Age != "NA") %>% 
+  group_by(Age) %>% 
+  select(Netflix, Hulu, `Prime Video`, `Disney+`)
+
+ageDemograph
+
+```
