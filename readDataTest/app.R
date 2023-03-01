@@ -10,7 +10,9 @@
 library(shiny)
 library(tidyverse)
 
-fullData <- read_delim("streaming-platform-data.csv")
+# NOTE: set your working directory to this folder when you're working on it, don't
+# move the data file.
+fullData <- read_delim("../data/streaming-platform-data.csv")
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
