@@ -84,10 +84,9 @@ server <- function(input, output, session) {
   
   #Creating table
   output$table <- renderTable({
-    Services <- c(names(streaming[7:10]))
-    Total_Movies <- c(sum(streaming[,7] == 1), sum(streaming[,8] == 1), sum(streaming[,9] == 1), sum(streaming[,10] == 1))
+    total_Movies <- c(sum(streaming[,7] == 1), sum(streaming[,8] == 1), sum(streaming[,9] == 1), sum(streaming[,10] == 1))
     
-    streaming_total_movies <- data.frame(Services,Total_Movies)
+    streaming_total_movies <- data.frame(streaming_services,total_Movies)
     streaming_total_movies
   })
   
