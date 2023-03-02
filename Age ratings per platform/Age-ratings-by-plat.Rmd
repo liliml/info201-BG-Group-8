@@ -11,13 +11,11 @@ library(stringr)
 stream <- read_delim("../Data/streaming-platform-data.csv")
 ```
 
-Age ratings by platform:
+Age ratings by platform (WORKING VERSION: TO SEE DIFFERENT GRAPHS CHANGE THE Y VALUE OF THE GGPLOT):
 ```{r}
-service <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 
 ageDemograph <- stream %>% 
   filter(Age != "NA") %>% 
-  filter(!!as.symbol(service) == 1)
   group_by(Age) %>% 
   summarize(Netflix = sum(Netflix), Hulu = sum(Hulu), `Prime Video` = sum(`Prime Video`), `Disney+` = sum(`Disney+`))
 
@@ -28,12 +26,33 @@ ggplot(data = ageDemograph,
       geom_bar(stat = "identity", position = "dodge") 
 ```
 
+
+BROKEN/TESTING VERSION
+```{r}
+service <- c("Netflix", "Hulu", "Prime Video", "Disney+")
+
+    ageDemograph2 <- stream %>% 
+      filter(Age != "NA") %>% 
+      group_by(Age) %>% 
+      ##filter(!!as.symbol(service) == 1) %>%
+      mutate(n = sum(Netflix, Hulu), n2 = sum(Netflix), n3 = sum(Hulu))
+      ##summarize(Netflix = sum(Netflix), Hulu = sum(Hulu), `Prime Video` = sum(`Prime Video`), `Disney+` = sum(`Disney+`))
+    
+    ggplot(data = ageDemograph2, 
+           aes(x = Age, y = n3)) +
+      geom_bar(stat = "identity", position = "dodge")
+
+```
+
+Alternative plots(?)
+movies: different platforms, sorted by age (age would equal x, platform equals y?) (Doesn't output a graph)
 ```{r}
 ageDemograph <- stream %>% 
   filter(Age != "NA") %>% 
   group_by(Age) %>% 
-  select(Netflix, Hulu, `Prime Video`, `Disney+`)
+  summarize(Netflix = sum(Netflix), Hulu = sum(Hulu), `Prime Video` = sum(`Prime Video`), `Disney+` = sum(`Disney+`)) %>% 
 
-ageDemograph
-
+    ggplot(aes(y = Age)) +
+      geom_bar(stat = "identity", position = "dodge")
 ```
+
