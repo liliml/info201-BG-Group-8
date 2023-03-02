@@ -13,8 +13,11 @@ stream <- read_delim("../Data/streaming-platform-data.csv")
 
 Age ratings by platform:
 ```{r}
+service <- c("Netflix", "Hulu", "Prime Video", "Disney+")
+
 ageDemograph <- stream %>% 
   filter(Age != "NA") %>% 
+  filter(!!as.symbol(service) == 1)
   group_by(Age) %>% 
   summarize(Netflix = sum(Netflix), Hulu = sum(Hulu), `Prime Video` = sum(`Prime Video`), `Disney+` = sum(`Disney+`))
 
