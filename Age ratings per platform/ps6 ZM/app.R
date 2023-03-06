@@ -1,5 +1,3 @@
-##I was helped by Bella Le
-
 library(tidyverse)
 library(shiny)
 
@@ -14,14 +12,14 @@ ui <- fluidPage(
              sidebarLayout(
                sidebarPanel(
                p("This is an app showing the movie data of different streaming 
-               platforms based on their age rating, Rotten Tomatoes rating, and year, 
-               starting from the earliest year of", strong("1914"), "to the 
-               latest year of", strong("2021."), "There are ", nrow(stream), 
-                 "rows and", ncol(stream), "columns. The dataset was made and 
+               platforms based on their age rating, Rotten Tomatoes rating, and 
+               year, starting from the earliest year of", strong("1914"), "to 
+               the latest year of", strong("2021."), "There are ", nrow(stream), 
+               "rows and", ncol(stream), "columns. The dataset was made and 
                posted on Kaggle.com about three years ago, and was most recently 
                updated about a year ago. It was mainly inspired by the questions 
                of", em('Which streaming platform(s) can I find this movie on?'),
-                 "and", em('What are the target age group movies available on each 
+               "and", em('What are the target age group movies available on each 
                streaming platform?'), "While there is no original author, there 
                was an available collaborator under the name of Ruchi Bhatia who 
                seems to own the dataset, so I believe they are the author.")
@@ -35,6 +33,14 @@ ui <- fluidPage(
              titlePanel("Histogram: Movies per Platform (By Age Rating)"),
              sidebarLayout(
                sidebarPanel(
+                 p("This chart attempts to understand what the differences in 
+                 each amount of movies for a single age rating can cause in 
+                 different streaming services. Based on the statistics gathered, 
+                 inferences can be made about the likelihood that a certain 
+                 movie will be approved for a streaming service's curation 
+                 based on the age rating it was given. This can also show trends 
+                 in what streaming services may typically prefer in terms of the 
+                 age ratings for a movie."),
                  selectInput(
                  "service",
                  "Streaming service type:",
