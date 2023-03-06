@@ -122,7 +122,31 @@ server <- function(input, output) {
     by_service <- data.frame(names, number) %>% 
       filter(names %in% selected)
     by_service
-    HTML("You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>", 
+    
+    #NOTE MAXMOVIES AND MINMOVIES DON'T SHOW THE SAME AMOUNT 
+    #OF MOVIES PER YEAR COMPARED TO THE BAR GRAPH, WHY IS THIS 
+    #OCCURING???? ALSO NEED TO FIX THE THINGS THAT SAY INCORRECT VALUES 
+    #BELOW
+    maxMoviesinaYear <- fullData %>% 
+      group_by(Year) %>% 
+      summarise(movieTotal = length(Title))
+    maxVal <- max(maxMoviesinaYear$movieTotal)
+    maxVal
+    maxYear <- max(maxMoviesinaYear$Year)
+    maxYear
+    
+    minMoviesinaYear <- fullData %>% 
+      group_by(Year) %>% 
+      summarise(movieTotal = length(Title))
+    minVal <- min(minMoviesinaYear$movieTotal)
+    minVal
+    minYear <- min(minMoviesinaYear$Year)
+    minYear
+    View(maxMoviesinaYear)
+    
+    HTML("!!! incorrect value: The year the most amount of movies were released was in ", maxYear, " when ", maxVal, " movies were released", "<br/>", 
+         "!!! incorrect value: The year the least amount of movies were released was in ", minYear, " when ", minVal, " movie was released", "<br/>", 
+         "You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>", 
          "There was ", sum(by_service$number), " movies in ", input$year, "<br/>") 
         
   })
