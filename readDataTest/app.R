@@ -144,10 +144,14 @@ server <- function(input, output) {
     minYear
     View(maxMoviesinaYear)
     
+    showMoviesinYear <- fullData %>% 
+      filter(Year == year) %>% 
+      summarize(moviesinyear = length(Title))
+    
     HTML("!!! incorrect value: The year the most amount of movies were released was in ", maxYear, " when ", maxVal, " movies were released", "<br/>", 
          "!!! incorrect value: The year the least amount of movies were released was in ", minYear, " when ", minVal, " movie was released", "<br/>", 
          "You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>", 
-         "There was ", sum(by_service$number), " movies in ", input$year, "<br/>") 
+         "There was ", showMoviesinYear$moviesinyear, " movies in ", input$year, "<br/>") 
         
   })
   
