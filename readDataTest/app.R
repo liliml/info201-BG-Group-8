@@ -111,9 +111,20 @@ server <- function(input, output) {
   })
   
   output$choosenYearandServices = renderUI({
-    HTML("You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>")#, 
-         #can't get this sum fuction thingy to work?
-         #"There was ", sum(by_service$number), " movies in ", input$year, "<br/>") 
+    year <- input$year
+    selected <- input$checkGroup
+    filtered_by_year <- fullData %>% 
+      filter(Year == year) 
+    number <- c(sum(filtered_by_year$Netflix), 
+                sum(filtered_by_year$Hulu), 
+                sum(filtered_by_year$`Prime Video`), 
+                sum(filtered_by_year$`Disney+`))
+    by_service <- data.frame(names, number) %>% 
+      filter(names %in% selected)
+    by_service
+    HTML("You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>", 
+         "There was ", sum(by_service$number), " movies in ", input$year, "<br/>") 
+        
   })
   
   output$table <- renderDataTable({
