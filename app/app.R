@@ -1,4 +1,4 @@
-# Initial app prototype for Kelly's graphs.
+# Prototype for Kelly's graphs.
 
 # Loading libraries
 library(shiny)
@@ -10,56 +10,57 @@ streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 ui <- fluidPage(
   
   # Application title
-  titlePanel("Ratings by Streaming Service"),
+  titlePanel("Movie Ratings by Streaming Service"),
   
   # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
+      
+      # Widget description
+      p("Select a streaming service to view the movie ratings."),
+      
+      # Widget
       selectInput(
         "service",
         "Streaming service:",
         streaming_services,
         selected = "Netflix"
-      )
+      ),
+      
+      # Analysis of the histograms
+      h3("Analysis:"),
+      p("All the streaming services have a large range of ratings and somewhat follow a normal distribution curve.
+        All histograms have some outlier data points where there are a handful of very low rated movies in their catalogs.
+          This is one area where start up companies making a streaming service that is competitive with the current market could improve on."),
+      p("Netflix seems to have the widest range of ratings in their movie catalog, while Hulu seem to have the most narrow.
+        An explanation for this could be that the size of Netflix's catalog is much larger than Hulu, almost having 1500 more movies.
+        Hulu appears to have the median with the highest rating as it's center is around the 60/100 Rotten Tomatoes rating. Disney+ also has a higher median than Netflix and Prime Video.
+        The service with the lowest median rating is Prime Video, with it's histogram looking to be skewed to the right. 
+        Prime Video also seems to have the lowest percentage of movies in its catalog that are highly rated as it's bins are the least green shaded and lean more towards red/yellow.")
     ),
     
     # Show a plot of the generated distribution
     mainPanel(
-      tabsetPanel(
-        
-        # Panel for histogram
-        tabPanel("Histogram", plotOutput("distPlot"),
-                 p("Histogram Description:"),
-                 p("These histograms contain data of each streaming service's movie catalog in 2021 to early 2022. 
+      
+      # Plot
+      plotOutput("distPlot"),
+      
+      # Text related to plot
+      h3("Histogram Description:"),
+      p("These histograms contain data of each streaming service's movie catalog in 2021 to early 2022. 
         The histogram's bins on the x axis represent the Rotten Tomatoes rating given to each movie. Ratings are points from 0 to 100.
         The histogram's bins on the x axis represent the ",
-                   a("Rotten Tomatoes rating", href= 'https://www.rottentomatoes.com/about#:~:text=When%20at%20least%2060%25%20of,to%20indicate%20its%20Fresh%20status.&text=When%20less%20than%2060%25%20of,to%20indicate%20its%20Rotten%20status.'),
-                   "given to each movie. Ratings are points from 0 to 100.
+        a("Rotten Tomatoes rating", href= 'https://www.rottentomatoes.com/about#:~:text=When%20at%20least%2060%25%20of,to%20indicate%20its%20Fresh%20status.&text=When%20less%20than%2060%25%20of,to%20indicate%20its%20Rotten%20status.'),
+        "given to each movie. Ratings are points from 0 to 100.
         The height of each bin corresponds to how many movies have gotten that rating.
-        The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings.")
-        ),
-        
-        # Panel for table of total movies for each streaming service
-        tabPanel("Table", tableOutput("table"),
-                 p("Table Description:"),
-                 p("This table shows how many movies were available on each streaming service in 2021 to early 2022.")
-                 ),
-        
-        # Panel for analysis
-        tabPanel("Analysis", p("Analysis:"),
-        p("All streaming services have a variety of ratings and mostly follow a normal distribution shape.
-        All histograms have some outlier data points where there are a handful of very low rated movies in their catalogs.
-          This is one area where start up companies making a streaming service that is competitive with the current market could improve on."),
-          p("Netflix seems to have the widest range of ratings in their movie catalog, while Hulu seem to have the most narrow.
-          An explanation for this could be that the size of Netflix's catalog is much larger than Hulu, almost having 1500 more movies.
-          Hulu appears to have the median with the highest rating as it's center is around the 60/100 Rotten Tomatoes rating. Disney+ also has a higher median than Netflix and Prime Video.
-          The service with the lowest median rating is Prime Video, with it's histogram looking to be skewed to the right. 
-            Prime Video also seems to have the lowest percentage of movies in its catalog that are highly rated as it's bins are the least green shaded and lean more towards red/yellow."),
-            p("There is a trend with larger movie catalogs and greater diversity of ratings, but moreso leaning towards the lower ratings spectrum while the smaller catalogs lean more towards the higher spectrum even with a more narrow ratings range.
-            It is possible that Hulu and Disney+ are more selective with what movies are on their catalog, hence why there are less but are of higher Rotten Tomatoes ratings. 
-              For start up companies, it's important to recognize the balance between having a large and diverse catalog of movies and a smaller scope that are of higher quality.")
-        )
-      )
+        The color scale on the bins are another way to depict the ratings. Green corresponds to higher ratings while red are lower ratings."),
+      
+      # Table about total movies on each service
+      tableOutput("table"),
+      
+      # Text related to table
+      h3("Table Description:"),
+      p("This table shows how many movies were available on each streaming service in 2021 to early 2022.")
     )
   )
 )
