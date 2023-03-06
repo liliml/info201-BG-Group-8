@@ -1,6 +1,7 @@
-#ps6
+#group project work
 library(shiny)
 library(tidyverse)
+library(shinyWidgets)
 
 fullData <- read_delim("streaming-platform-data.csv")
 fullData <- fullData %>%
@@ -9,34 +10,27 @@ names <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  setBackgroundColor(
+    color = c("#F7FBFF", "#2171B5"),
+    gradient = "linear",
+    direction = "bottom"
+  ),
   titlePanel("Streaming Services, Movies, and Years"), 
   mainPanel(width = "auto",
-            tabsetPanel(
-              tabPanel("Data Information", titlePanel("Info About Movies and Streaming Service Dataset"), 
-                       sidebarPanel(width = "auto",
-                                    p("This dataset focuses on various streaming services", em("(Netflix, Hulu, Prime Video,"), "and", em("Disney+)"), 
-                                      "and the movies that they have available, as well as the",
-                                      strong("movie ratings"), "of each movie. There are several movies in this dataset as well.", "There are", 
-                                      nrow(fullData), "movies", "Each tab shown here displays different information. The first tab shows general info about 
-                                                     this dataset, the second tab shows a bar graph that can be interacted with that",
-                                      strong("allows the user to pick a year to show the amount of movies for each streaming 
-                                                            service that year, as well as unselect streaming services to show for that year."), "
-                                                            The third panel shows a small table of a movie, year, if the streaming services have the 
-                                                            movies or not", em("(1 means the streaaming service has the movie, 0 means the streaming service
-                                                            doesn't have the movie)"), "as well as the movie rating and other data relating to the movie title.",
-                                      strong("The user pickes a movie using the dropdown menu, and after the movie is picked, data for that
-                                                                   movie will be shown."), 
-                                      "The fourth pannel shows", strong("all the data"), "including movie titles, movie ratings, the year the
-                                                            movie is from, if streaming platforms have the movie or not, and more."))
-              ), 
+              navbarPage(
+              "Menu",
               tabPanel("Graph",
-                       sidebarPanel(width = 6, titlePanel("Movies Per Streaming Service Per Year"), 
+                       sidebarPanel(width = 5, titlePanel("Movies Per Streaming Service Per Year"), 
                                     p("The bar plot below shows the amount of movies per year 
                                                 that are availiable on each streaming service. 
                                                 The slider will allow you to select a particular year to look at.
                                                 The years shown on the slider range from 1914 to 2021 which allows for
                                                 a broad selection of movies. The checkboxes displayed will also let you 
-                                                select which services to show for the selected year"), 
+                                                select which services to show for the selected year. This bar graph is helpful for understanding 
+                                                what years had the most movies, and which streaming platforms carry the most movies. These statistics 
+                                                could be helpful for finding which streaming service has the most options. This data could also help a 
+                                                startup company decide which years to focus on in terms of years movies were releaseed as more movies that
+                                                year accross more platforms could indicate more popularity for movies from that year."), 
                                     fluidRow(column(align = "center", width = 6, sliderInput("year", 
                                                                                              h4(strong("Year")), 
                                                                                              min = min(fullData$Year), 
@@ -50,32 +44,23 @@ ui <- fluidPage(
                                     ), 
                                     h4(strong(uiOutput("choosenYearandServices"))), 
                        ),
-                       mainPanel(width = 6, plotOutput("mainplot"))
-              ), 
-              tabPanel("Data Table by Movie", 
-                       sidebarPanel(
-                         titlePanel("Movies by Streaming Service"), 
-                         p("The small table below allows you to use the drop down menu to select a movie of your choosing to see data for. 
-                   The moves in the drop down menu are shown in alphabetical order. The columns show the movie's ID, the title of
-                   of the movie, the year the movie was released, the age rating of the movie, the rating of the movie on Rotten Tomatoes, and 
-                   if the streaming service has the movie (1 = the streaming service has the movie, 0 = the streaming service does not have 
-                   the movie)"),
-                         selectInput("MovieOptions", label = h3("Movie Options"),  
-                                     choices = sort(fullData$Title), 
-                                     selected = fullData[fullData$Title, 1]),
-                         h3(strong(textOutput("choosenM")))
-                       ), 
-                       mainPanel(dataTableOutput("table"))
-              ),
-              tabPanel("Data Table of All Movies, Years, and Ratings", 
-                       titlePanel("Movies Per Streaming Service Per Year"), 
-                       dataTableOutput("allData"))
+                       mainPanel(width = 7, dataTableOutput("plotTable"), plotOutput("mainplot"))
+              )
             )
   )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  output$selectedRows <- renderDataTable({
+    fullData %>% 
+      sample_n(input$rows)
+  })
+  
+  output$randRowsText = renderText({
+    paste0("You have selected ", input$rows, " rows of random movies to show data about")
+  })
+  
   output$value <- renderPrint({ 
     input$checkGroup 
   })
@@ -102,16 +87,33 @@ server <- function(input, output) {
       )
   })
   
+  output$plotTable <- renderDataTable({
+    year <- input$year
+    selected <- input$checkGroup
+    filtered_by_year <- fullData %>% 
+      filter(Year == year) 
+    number <- c(sum(filtered_by_year$Netflix), 
+                sum(filtered_by_year$Hulu), 
+                sum(filtered_by_year$`Prime Video`), 
+                sum(filtered_by_year$`Disney+`))
+    by_service <- data.frame(names, number) %>% 
+      filter(names %in% selected)
+    by_service
+  })
+  
   output$value <- renderPrint({ 
     input$MovieOptions 
   })
+  
   
   output$choosenM = renderText({
     paste0("You have selected the movie: ", input$MovieOptions)
   })
   
   output$choosenYearandServices = renderUI({
-    HTML("You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>") 
+    HTML("You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>")#, 
+         #can't get this sum fuction thingy to work?
+         #"There was ", sum(by_service$number), " movies in ", input$year, "<br/>") 
   })
   
   output$table <- renderDataTable({
