@@ -1,18 +1,13 @@
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
+# Bella Lee, Zerelda Mauricio, Lilian Law, and Kelly Le
+# INFO 201 Section BG
+# TA: Rona Guo
 #
 
-## Load libraries
 library(shiny)
 library(tidyverse)
-library(shinyWidgets)
 
-## Load data
+## Load data set
 streaming <- read_delim("../data/streaming-platform-data.csv")
 
 ## Streaming service names
@@ -20,7 +15,8 @@ streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 
 ui <- fluidPage(
     navbarPage(
-      ## Page title
+      
+      ## Title
       "Movies on Streaming Platforms",
       
       ## Overview
@@ -51,6 +47,7 @@ ui <- fluidPage(
           service (represented with 1 or 0).")
         
       ),
+      ## END Overview
       
       ## Movie Ratings by Streaming Service (Kelly)
       tabPanel(
@@ -100,9 +97,8 @@ ui <- fluidPage(
                  age ratings for a movie."),
           selectInput(
             "platform_service",
-            "Streaming service type:",
-            streaming_services,
-            selected = "Netflix"
+            "Streaming service:",
+            streaming_services
           ),
           radioButtons("platform_color", 
                        "Want to change the color?",
@@ -142,13 +138,13 @@ ui <- fluidPage(
            movies were releaseed as more movies that year accross more platforms 
            could indicate more popularity for movies from that year."), 
             sliderInput("year", 
-                         "Year", 
+                         "Year:", 
                          min = min(streaming$Year), 
                          max = max(streaming$Year), 
-                         min(streaming$Year),
+                         2004,
                          sep = ""),
             checkboxGroupInput("checkGroup", 
-                              "Select Streaming Services",
+                              "Streaming services:",
                               choices = streaming_services,
                               selected = streaming_services),
             textOutput("choosenYearandServices")
@@ -161,21 +157,17 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  
-  streaming$modified_ratings <- as.numeric(
-    str_remove(streaming$`Rotten Tomatoes`, "/100"))
-  
   ## Movie Ratings by Streaming Service
   output$ratings_plot <- renderPlot({
+    streaming$modified_ratings <- as.numeric(
+      str_remove(streaming$`Rotten Tomatoes`, "/100"))
     
-    # generate streaming service name based on input$service from ui.R
-    
-    # draw the histogram for the specified streaming service
+    # Draw the histogram for the specified streaming service
     streaming %>% 
       filter(!is.na(modified_ratings)) %>% 
       filter(!!as.symbol(input$rating_service) == 1) %>% 
       ggplot(aes(x = modified_ratings))+
-      geom_bar(stat = "count", aes(fill = ..x..))+
+      geom_bar(stat = "count", aes(fill = after_stat(x)))+
       scale_fill_gradient(low="red",high="green")+
       labs(title=input$rating_service,
            x = "Rotten Tomatoes Rating",
@@ -230,10 +222,7 @@ server <- function(input, output) {
       geom_col(mapping = aes(x = streaming_services, y = number, fill = factor(streaming_services))) +
       labs(title="Movies by Year",
            x = "Streaming Service",
-           y = "Movie count") + 
-      scale_fill_manual(
-        values = c("Netflix" = "red", "Hulu" = "seagreen2", "Prime Video" = "skyblue", "Disney+" = "blue")
-      )
+           y = "Movie count")
   })
   
   output$year_description <- renderText({
