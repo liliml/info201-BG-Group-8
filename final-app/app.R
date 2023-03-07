@@ -1,7 +1,12 @@
 #
-# Bella Lee, Zerelda Mauricio, Lilian Law, and Kelly Le
+# Final Project Deliverable
+# Bella Lee, Kelly Le, Lilian Law, and Zerelda Mauricio
 # INFO 201 Section BG
 # TA: Rona Guo
+#
+# This Shiny application includes interactive data visualizations for the Rotten
+# Tomatoes ratings, age ratings, and release years for movies on the streaming
+# platforms Netflix, Hulu, Disney+, and Amazon Prime.
 #
 
 library(shiny)
@@ -165,7 +170,25 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     ## Conclusion
     tabPanel(
       "Conclusion",
-      h1("Insights"),
+      
+      h1("General Findings"),
+      # Center table
+      fluidRow(
+        column(width = 3,
+               tableOutput("conclusion_table")),
+        column(width = 4,
+               plotOutput("conclusion_plot")),
+        column(width = 5,
+               p("Overall, Netflix and Prime Video dominate the movie streaming 
+                 industry, with 3695 and 4113 movies available respectively. 
+                 However, as elaborated upon in the more detailed analysis below, 
+                 each platform has its own strengths regarding typical Rotten 
+                 Tomatoes ratings, age ratings, and release years that allow 
+                 them to appeal to different audiences. Thus, when creating a 
+                 movie streaming platform, the below factors must be considered."))
+      ),
+      
+      h1("Metric-Related Insights"),
       fluidRow(
         column(
           width = 4,
@@ -205,7 +228,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
           p("")
         )
       ), # close fluidRow
-      tableOutput("conclusion_table"),
+      
       h1("Data Quality"),
       p("The quality of the dataset for the four streaming services is reasonable. 
         There are factors that could have made it better like including movie 
@@ -217,6 +240,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
         more movie selections and removing certain films from their curation list. 
         However, market inferences can still be made from past trends, and since 
         it has only been a year, the trends are still very predictive."),
+      
       h1("Future Direction"),
       p("To advance the project in the future, we could include more interactive 
         elements in the visualization using libraries other than ggplot. Elements 
@@ -232,10 +256,11 @@ ui <- fluidPage(theme = shinytheme("simplex"),
 server <- function(input, output) {
   ## Movie Ratings by Streaming Service
   output$ratings_plot <- renderPlot({
+    # Clean Rotten Tomatoes ratings
     streaming$modified_ratings <- as.numeric(
       str_remove(streaming$`Rotten Tomatoes`, "/100"))
-    
-    # Draw the histogram for the specified streaming service
+
+    # Draw histogram for amount of movies for each rating for the inputted platform
     streaming %>% 
       filter(!is.na(modified_ratings)) %>% 
       filter(!!as.symbol(input$rating_service) == 1) %>% 
@@ -326,17 +351,32 @@ server <- function(input, output) {
   ## END Movies Per Streaming Service per Year
   
   ## Conclusion
+  # Table that shows amount of movies for each streaming service
   output$conclusion_table <- renderTable({
     number <- c(sum(streaming$Netflix), 
                 sum(streaming$Hulu), 
                 sum(streaming$`Prime Video`), 
                 sum(streaming$`Disney+`))
     movies <- data.frame(streaming_services, number)
-    names(movies)
     movies %>%
+      arrange(-number) %>% 
       mutate(number = format(number, digits = 0)) %>% 
       rename(`Streaming Service` = streaming_services,
              `Number of Movies` = number)
+  })
+  
+  output$conclusion_plot <- renderPlot({
+    number <- c(sum(streaming$Netflix), 
+                sum(streaming$Hulu), 
+                sum(streaming$`Prime Video`), 
+                sum(streaming$`Disney+`))
+    movies <- data.frame(streaming_services, number)
+    ggplot(movies) +
+      geom_col(mapping = aes(x = streaming_services, y = number),
+               stat = "count", fill = "salmon") +
+      labs(title = "Number of Movies per Streaming Service",
+           x = "Streaming Service",
+           y = "Number of Movies")
   })
   ## END Conclusion
 } # close server
