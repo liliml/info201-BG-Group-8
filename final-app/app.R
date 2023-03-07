@@ -373,7 +373,7 @@ server <- function(input, output) {
     movies <- data.frame(streaming_services, number)
     ggplot(movies) +
       geom_col(mapping = aes(x = streaming_services, y = number),
-               stat = "count", fill = "salmon") +
+               fill = "salmon") +
       labs(title = "Number of Movies per Streaming Service",
            x = "Streaming Service",
            y = "Number of Movies")
