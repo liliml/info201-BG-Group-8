@@ -5,6 +5,7 @@
 #
 
 library(shiny)
+library(shinythemes)
 library(tidyverse)
 
 ## Load data set
@@ -13,7 +14,7 @@ streaming <- read_delim("data/streaming-platform-data.csv")
 ## Streaming service names
 streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("simplex"),
     navbarPage(
       
       ## Title
@@ -33,7 +34,7 @@ ui <- fluidPage(
         tags$ul(
           tags$li("What is the distribution of movie ratings on each streaming service?"),
           tags$li("What is the distribution of age ratings on each streaming service?"),
-          tags$li("How many movies per service per year were there?")
+          tags$li("How many movies per service per year are there?")
         ),
         h1("Data Source"),
         p("Our dataset covers four notable streaming services; Netflix, Hulu, 
@@ -45,17 +46,26 @@ ui <- fluidPage(
           with information of the movie name, what year it was from, the age rating, 
           Rotten tomatoes rating, and whether it was available on that particular 
           service (represented with 1 or 0)."),
-        img(src="amazon.png", alt="Amazon logo", width="auto", height="100px"),
-        img(src="disney.png", alt="Disney+ logo", width="auto", height="100px"),
-        img(src="hulu.png", alt="Hulu logo", width="auto", height="100px"),
-        img(src="netflix.png", alt="Netflix logo", width="auto", height="100px")
-      ),
-      ## END Overview
+        
+        # Create white space
+        headerPanel(""),
+        headerPanel(""),
+        
+        # Center images
+        fluidRow(
+          column(width = 12,
+                 align = "center",
+                 img(src="amazon.png", alt="Amazon logo", width="auto", height="100px"),
+                 img(src="disney.png", alt="Disney+ logo", width="auto", height="100px"),
+                 img(src="hulu.png", alt="Hulu logo", width="auto", height="100px"),
+                 img(src="netflix.png", alt="Netflix logo", width="auto", height="100px"))
+        )
+      ), # close Overview
       
       ## Movie Ratings by Streaming Service (Kelly)
       tabPanel(
-        "Typical Ratings",
-        titlePanel("Movie Ratings by Streaming Service"),
+        "Rotten Tomato Ratings",
+        titlePanel("Rotten Tomato Ratings by Streaming Service"),
         sidebarLayout(
           sidebarPanel(
             p("These histograms contain data of each streaming service's movie 
@@ -81,12 +91,11 @@ ui <- fluidPage(
             plotOutput("ratings_plot")
           )
         )
-      ),
-    ## END Movie Ratings by Streaming Service
+      ), # close Movie Ratings by Streaming Service
     
     ## Movies per Platform by Age Rating (Z)
     tabPanel(
-      "Typical Age Ratings",
+      "Age Ratings",
       titlePanel("Movies per Platform by Age Rating"),
       sidebarLayout(
         sidebarPanel(
@@ -119,27 +128,23 @@ ui <- fluidPage(
           textOutput("platform_text")
         )
       )
-    ),
-    ## END Movies per Platform by Age Rating
+    ), # close Movies per Platform by Age Rating
     
     ## Movies Per Streaming Service per Year (Lilian)
     tabPanel(
-      "Compare Services",
+      "Release Year",
       titlePanel("Movies Per Streaming Service Per Year"), 
       sidebarLayout(
          sidebarPanel(
-           p("The bar plot below shows the amount of movies per year that are 
-           availiable on each streaming service. The slider will allow you to 
-           select a particular year to look at. The years shown on the slider 
-           range from 1914 to 2021 which allows for a broad selection of movies. 
-           The checkboxes displayed will also let you select which services to 
-           show for the selected year. This bar graph is helpful for understanding 
-           what years had the most movies, and which streaming platforms carry 
-           the most movies. These statistics  could be helpful for finding which 
-           streaming service has the most options. This data could also help a 
-           startup company decide which years to focus on in terms of years 
-           movies were releaseed as more movies that year accross more platforms 
-           could indicate more popularity for movies from that year."), 
+           p("The plot shows the amount of movies per year that are 
+           availiable on each streaming service. This bar graph is helpful for 
+           understandingwhat years had the most movies, and which streaming 
+           platforms carry the most movies. These statistics  could be helpful 
+           for finding which streaming service has the most options. This data 
+           could also help a startup company decide which years to focus on in 
+           terms of years movies were released, as more movies that year accross 
+           more platforms could indicate more popularity for movies from that 
+           year."), 
             sliderInput("year", 
                          "Year:", 
                          min = min(streaming$Year), 
@@ -155,10 +160,74 @@ ui <- fluidPage(
           plotOutput("year_plot"), 
           textOutput("choosenYearandServices"))
       )
-    )
-    ## END Movies Per Streaming Service per Year
-  )
-)
+    ), # close Movies Per Streaming Service per Year
+    
+    ## Conclusion
+    tabPanel(
+      "Conclusion",
+      h1("Insights"),
+      fluidRow(
+        column(
+          width = 4,
+          h2("Rotten Tomato Ratings"),
+          p("There is a trend with larger movie catalogs and greater diversity of 
+          ratings. The services with a larger movie catalog have more movies with 
+          lower ratings (skewed to the right), while the smaller catalogs lean more 
+          towards the higher end, despite their narrow range of diverse ratings. It 
+          is possible that Hulu and Disney+ are more selective with what movies 
+          are on their catalog, hence why there are less movies but have higher 
+          Rotten Tomatoes ratings, while Netflix and Prime Video’s approach is 
+          having many movies of all types. For start up companies, it's important 
+          to recognize the balance between having a large and diverse catalog of 
+          movies and a smaller scope that are of higher quality. It is not 
+          realistically possible to have both approaches so companies should 
+          consider which method they want to target more.")
+        ),
+        column(
+          width = 4,
+          h2("Age Ratings"),
+          p("Most streaming platforms curate a list of movies mainly geared 
+            towards adults, with the highest age ratings for 3 of the 4 streaming 
+            platforms being rated 18+.  The outlier to this trend is Disney+, 
+            whose highest curation is under the age rating ‘all.’ This implies 
+            that the main target audience of movie stream providers is adults, 
+            and that Disney is only an exception due to their entire brand mainly 
+            advertising towards families and children. This displays a huge disparity 
+            that startup streaming companies can utilize to their advantage 
+            through curating media for children. While there is high concentration 
+            — and by consequence, high competition— in the mature-rated market of 
+            film, there is an open field for children’s film, which can be quite 
+            lucrative.")
+        ),
+        column(
+          width = 4,
+          h2("Release Year"),
+          p("")
+        )
+      ), # close fluidRow
+      tableOutput("conclusion_table"),
+      h1("Data Quality"),
+      p("The quality of the dataset for the four streaming services is reasonable. 
+        There are factors that could have made it better like including movie 
+        genres, duration of movie, and origin country. Having these would create 
+        a better understanding of what kind of movies are hosted on successful 
+        streaming platforms. The dataset is a bit outdated which may interfere 
+        with our project goal since the streaming service industry has grown 
+        rapidly and the dataset has not kept up with this, exponentially adding 
+        more movie selections and removing certain films from their curation list. 
+        However, market inferences can still be made from past trends, and since 
+        it has only been a year, the trends are still very predictive."),
+      h1("Future Direction"),
+      p("To advance the project in the future, we could include more interactive 
+        elements in the visualization using libraries other than ggplot. Elements 
+        such as tooltips will help tell a more detailed story about the data at 
+        a glance. We could also improve formatting and aesthetics (fonts, 
+        background color, how tabs look, size of layout, etc). Lastly, finding 
+        another dataset with more streaming services to increase our library 
+        could expand our insights and takeaways.")
+    ) # close Conclusion
+  ) # close navBarPage
+) # close fluidPage
 
 server <- function(input, output) {
   ## Movie Ratings by Streaming Service
@@ -200,7 +269,7 @@ server <- function(input, output) {
       filter(!!rlang::sym(input$platform_service) == 1)
     
     paste("There are a total of", nrow(ageDemo), 
-          "movies for this streaming platform,", paste0(input$platform_service, "."), 
+          "movies on", paste0(input$platform_service, "."), 
           "This data shows that there are large discrepancies in what kind of 
           movies are available for each demographic.")
   })
@@ -219,10 +288,14 @@ server <- function(input, output) {
     by_service <- data.frame(streaming_services, number) %>% 
       filter(streaming_services %in% selected)
     ggplot(by_service) +
-      geom_col(mapping = aes(x = streaming_services, y = number, fill = factor(streaming_services))) +
+      geom_col(mapping = aes(
+        x = streaming_services, 
+        y = number, 
+        fill = factor(streaming_services)),
+        show.legend = FALSE) +
       labs(title="Movies by Year",
-           x = "Streaming Service",
-           y = "Movie count")
+           x="Streaming Service",
+           y="Movie count")
   })
   
   output$year_description <- renderText({
@@ -246,19 +319,27 @@ server <- function(input, output) {
                 sum(filtered_by_year$`Disney+`))
     by_service <- data.frame(streaming_services, number) %>% 
       filter(streaming_services %in% selected)
-    paste("There were ", sum(by_service$number), 
-         " movies in ", input$year, "across all streaming platforms.") 
+    paste("There are ", sum(by_service$number), 
+         " movies released in ", input$year, "across all streaming platforms.") 
     
   })
   ## END Movies Per Streaming Service per Year
   
-  ## Images
-  output$amazon_logo <- renderImage({
-    list(src = "../imgs/amazon.png",
-         alt = "")
-  }, deleteFile = FALSE)
-  ## END Images
-}
+  ## Conclusion
+  output$conclusion_table <- renderTable({
+    number <- c(sum(streaming$Netflix), 
+                sum(streaming$Hulu), 
+                sum(streaming$`Prime Video`), 
+                sum(streaming$`Disney+`))
+    movies <- data.frame(streaming_services, number)
+    names(movies)
+    movies %>%
+      mutate(number = format(number, digits = 0)) %>% 
+      rename(`Streaming Service` = streaming_services,
+             `Number of Movies` = number)
+  })
+  ## END Conclusion
+} # close server
 
 # Run the application 
 shinyApp(ui = ui, server = server)
