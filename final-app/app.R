@@ -14,7 +14,7 @@ library(shinythemes)
 library(tidyverse)
 
 ## Load data set
-streaming <- read_delim("data/streaming-platform-data.csv")
+streaming <- read_delim("../data/streaming-platform-data.csv")
 
 ## Streaming service names
 streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
