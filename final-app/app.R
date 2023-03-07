@@ -141,7 +141,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
          sidebarPanel(
            p("The plot shows the amount of movies per year that are 
            availiable on each streaming service. This bar graph is helpful for 
-           understandingwhat years had the most movies, and which streaming 
+           understanding what years had the most movies, and which streaming 
            platforms carry the most movies. These statistics  could be helpful 
            for finding which streaming service has the most options. This data 
            could also help a startup company decide which years to focus on in 
