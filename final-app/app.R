@@ -74,9 +74,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
         sidebarLayout(
           sidebarPanel(
             p("These histograms contain data of each streaming service's movie 
-              catalog in 2021 to early 2022. The histogram's bins on the x axis 
-              represent the Rotten Tomatoes rating given to each movie. Ratings are 
-              points from 0 to 100. The histogram's bins on the x axis represent the ",
+              catalog in 2021 to early 2022. The histogram's bins on the x axis represent the ",
                 a("Rotten Tomatoes rating", 
                   href="https://www.rottentomatoes.com/about#:~:text=When%20at%20least%2060%25%20of,to%20indicate%20its%20Fresh%20status.&text=When%20less%20than%2060%25%20of,to%20indicate%20its%20Rotten%20status."),
                 "given to each movie. Ratings are points from 0 to 100. The height of 
