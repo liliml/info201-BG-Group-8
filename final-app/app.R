@@ -160,7 +160,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                               selected = streaming_services),
         ), 
         mainPanel(
-          plotOutput("year_plot")
+          plotOutput("year_plot"))
       )
     ), # close Movies Per Streaming Service per Year
     
