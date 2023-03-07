@@ -46,8 +46,9 @@ ui <- fluidPage(theme = shinytheme("simplex"),
           Prime Video, and Disney+. The dataset was collected through data 
           scraping from these four streaming services in 2021 through early 2022 
           and published on",
-          a("Kaggle", href="https://www.kaggle.com/datasets/ruchi798/movies-on-netflix-prime-video-hulu-and-disney"),
-          ". It contains the entire movie catalog of the four streaming services, 
+          paste0(a("Kaggle", href="https://www.kaggle.com/datasets/ruchi798/movies-on-netflix-prime-video-hulu-and-disney")
+                 "."),
+          "It contains the entire movie catalog of the four streaming services, 
           with information of the movie name, what year it was from, the age rating, 
           Rotten tomatoes rating, and whether it was available on that particular 
           service (represented with 1 or 0)."),
