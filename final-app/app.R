@@ -160,8 +160,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                               selected = streaming_services),
         ), 
         mainPanel(
-          plotOutput("year_plot"), 
-          textOutput("choosenYearandServices"))
+          plotOutput("year_plot")
       )
     ), # close Movies Per Streaming Service per Year
     
@@ -329,22 +328,6 @@ server <- function(input, output) {
     paste("There are", nrow(filtered), 
           "movies that were released between", input$plot_year[1], "and", 
           input$plot_year[2], "on", paste0(input$year_service, "."))
-  })
-  
-  output$choosenYearandServices <-  renderText({
-    year <- input$year
-    selected <- input$checkGroup
-    filtered_by_year <- streaming %>% 
-      filter(Year == year) 
-    number <- c(sum(filtered_by_year$Netflix), 
-                sum(filtered_by_year$Hulu), 
-                sum(filtered_by_year$`Prime Video`), 
-                sum(filtered_by_year$`Disney+`))
-    by_service <- data.frame(streaming_services, number) %>% 
-      filter(streaming_services %in% selected)
-    paste("There are ", sum(by_service$number), 
-         " movies released in ", input$year, "across all streaming platforms.") 
-    
   })
   ## END Movies Per Streaming Service per Year
   
