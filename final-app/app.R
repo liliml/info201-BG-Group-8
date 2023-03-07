@@ -8,7 +8,7 @@ library(shiny)
 library(tidyverse)
 
 ## Load data set
-streaming <- read_delim("../data/streaming-platform-data.csv")
+streaming <- read_delim("data/streaming-platform-data.csv")
 
 ## Streaming service names
 streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
@@ -44,8 +44,11 @@ ui <- fluidPage(
           ". It contains the entire movie catalog of the four streaming services, 
           with information of the movie name, what year it was from, the age rating, 
           Rotten tomatoes rating, and whether it was available on that particular 
-          service (represented with 1 or 0).")
-        
+          service (represented with 1 or 0)."),
+        img(src="amazon.png", alt="Amazon logo", width="auto", height="100px"),
+        img(src="disney.png", alt="Disney+ logo", width="auto", height="100px"),
+        img(src="hulu.png", alt="Hulu logo", width="auto", height="100px"),
+        img(src="netflix.png", alt="Netflix logo", width="auto", height="100px")
       ),
       ## END Overview
       
@@ -147,9 +150,10 @@ ui <- fluidPage(
                               "Streaming services:",
                               choices = streaming_services,
                               selected = streaming_services),
-            textOutput("choosenYearandServices")
         ), 
-        mainPanel(plotOutput("year_plot"))
+        mainPanel(
+          plotOutput("year_plot"), 
+          textOutput("choosenYearandServices"))
       )
     )
     ## END Movies Per Streaming Service per Year
@@ -195,14 +199,10 @@ server <- function(input, output) {
       filter(Age != "NA") %>% 
       filter(!!rlang::sym(input$platform_service) == 1)
     
-    paste("This is a plot output of the number of movies in each age demographic
-          for the selected streaming service. There are a total of", nrow(ageDemo), 
-          "movies for this streaming platform,", input$platform_service, ". This data 
-          shows that there are large discrepancies in what kind of movies are 
-          available for each demographic. Using a table like this, you can find 
-          many things, such as where a streaming service is lacking material for
-          a certain age demographic. If you are an aspiring film maker and want 
-          to get the big bucks, this is the data description for you!")
+    paste("There are a total of", nrow(ageDemo), 
+          "movies for this streaming platform,", paste0(input$platform_service, "."), 
+          "This data shows that there are large discrepancies in what kind of 
+          movies are available for each demographic.")
   })
   ## END Movies per Platform by Age Rating
   
@@ -235,7 +235,7 @@ server <- function(input, output) {
           input$plot_year[2], "on", paste0(input$year_service, "."))
   })
   
-  output$choosenYearandServices = renderText({
+  output$choosenYearandServices <-  renderText({
     year <- input$year
     selected <- input$checkGroup
     filtered_by_year <- streaming %>% 
@@ -251,6 +251,13 @@ server <- function(input, output) {
     
   })
   ## END Movies Per Streaming Service per Year
+  
+  ## Images
+  output$amazon_logo <- renderImage({
+    list(src = "../imgs/amazon.png",
+         alt = "")
+  }, deleteFile = FALSE)
+  ## END Images
 }
 
 # Run the application 
