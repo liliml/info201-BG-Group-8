@@ -139,21 +139,19 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                     titlePanel("Movies Per Streaming Service Per Year"), 
                     sidebarLayout(
                       sidebarPanel(
-                        p("
-                        The bar plot below shows the amount of movies per year 
-                                                that are availiable on each streaming service. 
-                                                The slider will allow you to select a particular year to look at.
-                                                The years shown on the slider range from 1914 to 2021 which allows for
-                                                a broad selection of movies. The checkboxes displayed will also let you 
-                                                select which services to show for the selected year. Note that some steaming 
-                                                services may carry the same movie, so the total amount of movies released in a year 
-                                                may differ from the total when the values of Netflix, Hulu, Prime Video, and Disney+ are added up together
-                                                This bar graph is helpful for understanding 
-                                                what years had the most movies, and which streaming platforms carry the most movies. These statistics 
-                                                could be helpful for finding which streaming service has the most options. This data could also help a 
-                                                startup company decide which years to focus on in terms of years movies were releaseed as more movies that
-                                                year accross more platforms could indicate more popularity for movies from that year.
-                          "), 
+                        p("The bar plot below shows the amount of movies per year 
+                          that are availiable on each streaming service. 
+                          The slider will allow you to select a particular year to look at.
+                          The years shown on the slider range from 1914 to 2021 which allows for
+                          a broad selection of movies. The checkboxes displayed will also let you 
+                          select which services to show for the selected year. Note that some steaming 
+                          services may carry the same movie, so the total amount of movies released in a year 
+                          may differ from the total when the values of Netflix, Hulu, Prime Video, and Disney+ are added up together
+                          This bar graph is helpful for understanding 
+                          what years had the most movies, and which streaming platforms carry the most movies. These statistics 
+                          could be helpful for finding which streaming service has the most options. This data could also help a 
+                          startup company decide which years to focus on in terms of years movies were releaseed as more movies that
+                          year accross more platforms could indicate more popularity for movies from that year."), 
                         sliderInput("year", 
                                     "Year:", 
                                     min = min(streaming$Year), 
@@ -164,7 +162,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                            "Streaming services:",
                                            choices = streaming_services,
                                            selected = streaming_services),
-                        h4(strong(uiOutput("choosenYearandServices")))
+                        uiOutput("choosenYearandServices")
                       ), 
                       mainPanel(
                         plotOutput("year_plot"))
@@ -298,50 +296,48 @@ server <- function(input, output) {
   output$choosenYearandServices = renderUI({
     year <- input$year
     selected <- input$checkGroup
-    filtered_by_year <- fullData %>% 
+    filtered_by_year <- streaming %>% 
       filter(Year == year) 
     number <- c(sum(filtered_by_year$Netflix), 
                 sum(filtered_by_year$Hulu), 
                 sum(filtered_by_year$`Prime Video`), 
                 sum(filtered_by_year$`Disney+`))
-    by_service <- data.frame(names, number) %>% 
-      filter(names %in% selected)
-    by_service
+    by_service <- data.frame(streaming_services, number) %>% 
+      filter(streaming_services %in% selected)
     
-    maxMoviesinaYear <- fullData %>% 
+    maxMoviesinaYear <- streaming %>% 
       group_by(Year) %>% 
       summarise(movieTotal = length(Title))
-    View(maxMoviesinaYear)
+    
     maxVal <- max(maxMoviesinaYear$movieTotal)
-    maxVal
+    
     maxMoviesinaYear <- maxMoviesinaYear %>% 
       group_by(Year) %>% 
       filter(movieTotal == maxVal)
-    maxMoviesinaYear
-    maxYear <- max(maxMoviesinaYear$Year)
-    maxYear
     
-    minMoviesinaYear <- fullData %>% 
+    maxYear <- max(maxMoviesinaYear$Year)
+
+    minMoviesinaYear <- streaming %>% 
       group_by(Year) %>% 
       summarise(movieTotal = length(Title))
     minVal <- min(minMoviesinaYear$movieTotal)
-    minVal
+    
     minMoviesinaYear <- minMoviesinaYear %>% 
       group_by(Year) %>% 
       filter(movieTotal == minVal)
-    minMoviesinaYear
-    minYear <- min(minMoviesinaYear$Year)
-    minYear
-    View(maxMoviesinaYear)
     
-    showMoviesinYear <- fullData %>% 
+    minYear <- min(minMoviesinaYear$Year)
+    
+    showMoviesinYear <- streaming %>% 
       filter(Year == year) %>% 
       summarize(moviesinyear = length(Title))
     
-    HTML("The year the most amount of movies were released was in ", maxYear, " when ", maxVal, " movies were released", "<br/>", 
-         "The earliest year the least amount of movies were released was in ", minYear, " when ", minVal, " movie was released. Multiple years primarily the earlier 
-         years had the least amount of movies.", "<br/>", 
-         "There was ", showMoviesinYear$moviesinyear, " movies in ",input$year, "<br/>") 
+    HTML("<p>The year when the most movies were released was ", maxYear, 
+         ", with ", maxVal, " movies.</p>", 
+         "<p>The earliest year when the least amount of movies were released was ", 
+         minYear, ", with ", minVal, " movies. Multiple years, primarily the earlier 
+         years, had the least amount of movies.</p>",
+         "<p>There were ", showMoviesinYear$moviesinyear, " movies in ",input$year, "</p>") 
   })
   
   output$platform_text <- renderText({
