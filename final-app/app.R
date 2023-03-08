@@ -28,6 +28,8 @@ ui <- fluidPage(
     ## Overview
     tabPanel(
       "Overview",
+      p("Project created by Bella Lee, Kelly Le, Lilian Law, Zerelda Mauricio for
+        INFO 201 Winter 2023."),
       h1("Purpose and Audience"),
       p(
         "With the rise of online streaming, many different services have
