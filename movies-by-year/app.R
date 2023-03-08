@@ -20,35 +20,34 @@ ui <- fluidPage(
               navbarPage(
               "Menu",
               tabPanel("Graph",
-                 sidebarPanel(width = 5, titlePanel("Movies Per Streaming Service Per Year"), 
-                  p("The bar plot below shows the amount of movies per year 
-                    that are availiable on each streaming service. 
-                    The slider will allow you to select a particular year to look at.
-                    The years shown on the slider range from 1914 to 2021 which allows for
-                    a broad selection of movies. The checkboxes displayed will also let you 
-                    select which services to show for the selected year. This bar graph is helpful for understanding 
-                    what years had the most movies, and which streaming platforms carry the most movies. These statistics 
-                    could be helpful for finding which streaming service has the most options. This data could also help a 
-                    startup company decide which years to focus on in terms of years movies were releaseed as more movies that
-                    year accross more platforms could indicate more popularity for movies from that year."), 
-                  fluidRow(column(align = "center", width = 6, 
-                      sliderInput("year", 
-                     h4(strong("Year")), 
-                     min = min(fullData$Year), 
-                     max = max(fullData$Year), 
-                     min(fullData$Year),
-                     sep = "")), 
-                   column(width = 6, align = "center", checkboxGroupInput("checkGroup", 
-                      label = h4(strong("Select Streaming Services")),
-                      choices = names,
-                      selected = names))
-                    ), 
-                    h4(strong(uiOutput("choosenYearandServices"))), 
-                 ),
-                 mainPanel(
-                   width = 7, 
-                   dataTableOutput("plotTable"), 
-                   plotOutput("mainplot"))
+                       sidebarPanel(width = 5, titlePanel("Movies Per Streaming Service Per Year"), 
+                                    p("The bar plot below shows the amount of movies per year 
+                                                that are availiable on each streaming service. 
+                                                The slider will allow you to select a particular year to look at.
+                                                The years shown on the slider range from 1914 to 2021 which allows for
+                                                a broad selection of movies. The checkboxes displayed will also let you 
+                                                select which services to show for the selected year. Note that some steaming 
+                                                services may carry the same movie, so the total amount of movies released in a year 
+                                                may differ from the total when the values of Netflix, Hulu, Prime Video, and Disney+ are added up together
+                                                This bar graph is helpful for understanding 
+                                                what years had the most movies, and which streaming platforms carry the most movies. These statistics 
+                                                could be helpful for finding which streaming service has the most options. This data could also help a 
+                                                startup company decide which years to focus on in terms of years movies were releaseed as more movies that
+                                                year accross more platforms could indicate more popularity for movies from that year."), 
+                                    fluidRow(column(align = "center", width = 6, sliderInput("year", 
+                                                                                             h4(strong("Year")), 
+                                                                                             min = min(fullData$Year), 
+                                                                                             max = max(fullData$Year), 
+                                                                                             min(fullData$Year),
+                                                                                             sep = "")), 
+                                             column(width = 6, align = "center", checkboxGroupInput("checkGroup", 
+                                                                                                    label = h4(strong("Select Streaming Services")),
+                                                                                                    choices = names,
+                                                                                                    selected = names))
+                                    ), 
+                                    h4(strong(uiOutput("choosenYearandServices"))), 
+                       ),
+                       mainPanel(width = 7, dataTableOutput("plotTable"), plotOutput("mainplot"))
               )
             )
   )
@@ -134,8 +133,13 @@ server <- function(input, output) {
     maxMoviesinaYear <- fullData %>% 
       group_by(Year) %>% 
       summarise(movieTotal = length(Title))
+    View(maxMoviesinaYear)
     maxVal <- max(maxMoviesinaYear$movieTotal)
     maxVal
+    maxMoviesinaYear <- maxMoviesinaYear %>% 
+      group_by(Year) %>% 
+      filter(movieTotal == maxVal)
+    maxMoviesinaYear
     maxYear <- max(maxMoviesinaYear$Year)
     maxYear
     
@@ -144,6 +148,10 @@ server <- function(input, output) {
       summarise(movieTotal = length(Title))
     minVal <- min(minMoviesinaYear$movieTotal)
     minVal
+    minMoviesinaYear <- minMoviesinaYear %>% 
+      group_by(Year) %>% 
+      filter(movieTotal == minVal)
+    minMoviesinaYear
     minYear <- min(minMoviesinaYear$Year)
     minYear
     View(maxMoviesinaYear)
@@ -152,8 +160,9 @@ server <- function(input, output) {
       filter(Year == year) %>% 
       summarize(moviesinyear = length(Title))
     
-    HTML("!!! incorrect value: The year the most amount of movies were released was in ", maxYear, " when ", maxVal, " movies were released", "<br/>", 
-         "!!! incorrect value: The year the least amount of movies were released was in ", minYear, " when ", minVal, " movie was released", "<br/>", 
+    HTML("The year the most amount of movies were released was in ", maxYear, " when ", maxVal, " movies were released", "<br/>", 
+         "The earliest year the least amount of movies were released was in ", minYear, " when ", minVal, " movie was released. Multiple years primarily the earlier 
+         years had the least amount of movies.", "<br/>", 
          "You have selected the year: ", input$year, "<br/>", "You have selected these movie services: ", toString(input$checkGroup), "<br/>", 
          "There was ", showMoviesinYear$moviesinyear, " movies in ", input$year, "<br/>") 
         
