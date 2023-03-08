@@ -464,10 +464,13 @@ server <- function(input, output) {
           fill = factor(streaming_services)
         ),
         show.legend = FALSE
-      ) +
+      ) + 
       labs(title = "Movies by Year",
            x = "Streaming Service",
-           y = "Movie count")
+           y = "Movie count") + 
+      scale_fill_manual(
+        values = c("Netflix" = "red", "Hulu" = "seagreen2", "Prime Video" = "skyblue", "Disney+" = "blue")
+      )
   })
   
   output$year_description <- renderText({
