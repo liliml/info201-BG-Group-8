@@ -1,5 +1,4 @@
-# info201-BG-Group-8
+# INFO 201 Section BG Group 4
 
-# Shiny link:
-Insert Link here
+[View project](https://bella-lee.shinyapps.io/info201-final-project/)
 

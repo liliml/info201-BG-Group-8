@@ -14,7 +14,7 @@ library(shinythemes)
 library(tidyverse)
 
 ## Load data set
-streaming <- read_delim("../data/streaming-platform-data.csv")
+streaming <- read_delim("streaming-platform-data.csv")
 
 ## Streaming service names
 streaming_services <- c("Netflix", "Hulu", "Prime Video", "Disney+")
@@ -31,18 +31,20 @@ ui <- fluidPage(
       h1("Purpose and Audience"),
       p(
         "With the rise of online streaming, many different services have
-          flooded the market to fulfill people’s demand for convenient entertainment.
-          Our project looks at various qualities of streaming services’ movie
-          catalogs to identify if there are any discernible relationships or
-          trends that could give start up companies or entrepreneurs an idea of
-          how to create a service that would be competitive in the market."
+          flooded the market to fulfill people’s demand for convenient
+          entertainment. Our project looks at various qualities of streaming
+          services’ movie catalogs to identify if there are any discernible
+          relationships or trends that could give start up companies or
+          entrepreneurs an idea of how to create a service that would be
+        competitive in the market."
       ),
       h1("Main Questions"),
       tags$ul(
         tags$li(
           "What is the distribution of movie ratings on each streaming service?"
         ),
-        tags$li("What is the distribution of age ratings on each streaming service?"),
+        tags$li("What is the distribution of age ratings on each streaming
+                service?"),
         tags$li("How many movies per service per year are there?")
       ),
       h1("Data Source"),
@@ -101,13 +103,14 @@ ui <- fluidPage(
       sidebarLayout(sidebarPanel(
         p(
           "These histograms contain data of each streaming service's movie
-              catalog in 2021 to early 2022. The histogram's bins on the x axis represent the ",
+          catalog in 2021 to early 2022. The histogram's bins on the x axis
+          represent the ",
           a("Rotten Tomatoes rating",
             href = "https://www.rottentomatoes.com/about#:~:text=When%20at%20least%2060%25%20of,to%20indicate%20its%20Fresh%20status.&text=When%20less%20than%2060%25%20of,to%20indicate%20its%20Rotten%20status."),
           "given to each movie. Ratings are points from 0 to 100. The height of
-              each bin corresponds to how many movies have gotten that rating. The
-              color scale on the bins are another way to depict the ratings. Green
-              corresponds to higher ratings while red are lower ratings."
+          each bin corresponds to how many movies have gotten that rating. The
+          color scale on the bins are another way to depict the ratings. Green
+          corresponds to higher ratings while red are lower ratings."
         ),
         selectInput(
           "rating_service",
@@ -130,13 +133,13 @@ ui <- fluidPage(
         sidebarPanel(
           p(
             "This chart attempts to understand what the differences in
-                        each amount of movies for a single age rating can cause in
-                        different streaming services. Based on the statistics gathered,
-                       inferences can be made about the likelihood that a certain
-                       movie will be approved for a streaming service's curation
-                       based on the age rating it was given. This can also show trends
-                       in what streaming services may typically prefer in terms of the
-                       age ratings for a movie."
+            each amount of movies for a single age rating can cause in
+            different streaming services. Based on the statistics gathered,
+            inferences can be made about the likelihood that a certain
+            movie will be approved for a streaming service's curation
+            based on the age rating it was given. This can also show trends
+            in what streaming services may typically prefer in terms of the
+            age ratings for a movie."
           ),
           selectInput("platform_service",
                       "Streaming service:",
@@ -169,18 +172,14 @@ ui <- fluidPage(
         sidebarPanel(
           p(
             "The bar plot below shows the amount of movies per year
-                          that are availiable on each streaming service.
-                          The slider will allow you to select a particular year to look at.
-                          The years shown on the slider range from 1914 to 2021 which allows for
-                          a broad selection of movies. The checkboxes displayed will also let you
-                          select which services to show for the selected year. Note that some steaming
-                          services may carry the same movie, so the total amount of movies released in a year
-                          may differ from the total when the values of Netflix, Hulu, Prime Video, and Disney+ are added up together
-                          This bar graph is helpful for understanding
-                          what years had the most movies, and which streaming platforms carry the most movies. These statistics
-                          could be helpful for finding which streaming service has the most options. This data could also help a
-                          startup company decide which years to focus on in terms of years movies were releaseed as more movies that
-                          year accross more platforms could indicate more popularity for movies from that year."
+            that are availiable on each streaming service.
+            The slider allows you to select a particular year to look at.
+            The years shown on the slider range from 1914 to 2021, which allows 
+            for a broad selection of movies. The checkboxes allow you
+            select which services to show for the selected year. Note that some 
+            streaming services may carry the same movie, so the total amount of 
+            movies released in a year may differ from the total when the values 
+            of Netflix, Hulu, Prime Video, and Disney+ are summed up."
           ),
           sliderInput(
             "year",
@@ -218,12 +217,12 @@ ui <- fluidPage(
           width = 5,
           p(
             "Overall, Netflix and Prime Video dominate the movie streaming
-                             industry, with 3695 and 4113 movies available respectively.
-                             However, as elaborated upon in the more detailed analysis below,
-                             each platform has its own strengths regarding typical Rotten
-                             Tomatoes ratings, age ratings, and release years that allow
-                             them to appeal to different audiences. Thus, when creating a
-                             movie streaming platform, the below factors must be considered."
+             industry, with 3695 and 4113 movies available respectively.
+             However, as elaborated upon in the more detailed analysis below,
+             each platform has its own strengths regarding typical Rotten
+             Tomatoes ratings, age ratings, and release years that allow
+             them to appeal to different audiences. Thus, when creating a
+             movie streaming platform, the below factors must be considered."
           )
         )
       ),
@@ -235,17 +234,17 @@ ui <- fluidPage(
           h2("Rotten Tomato Ratings"),
           p(
             "There is a trend with larger movie catalogs and greater diversity of
-                        ratings. The services with a larger movie catalog have more movies with
-                        lower ratings (skewed to the right), while the smaller catalogs lean more
-                        towards the higher end, despite their narrow range of diverse ratings. It
-                        is possible that Hulu and Disney+ are more selective with what movies
-                        are on their catalog, hence why there are less movies but have higher
-                        Rotten Tomatoes ratings, while Netflix and Prime Video’s approach is
-                        having many movies of all types. For start up companies, it's important
-                        to recognize the balance between having a large and diverse catalog of
-                        movies and a smaller scope that are of higher quality. It is not
-                        realistically possible to have both approaches so companies should
-                        consider which method they want to target more."
+            ratings. The services with a larger movie catalog have more movies with
+            lower ratings (skewed to the right), while the smaller catalogs lean more
+            towards the higher end, despite their narrow range of diverse ratings. It
+            is possible that Hulu and Disney+ are more selective with what movies
+            are on their catalog, hence why there are less movies but have higher
+            Rotten Tomatoes ratings, while Netflix and Prime Video’s approach is
+            having many movies of all types. For start up companies, it's important
+            to recognize the balance between having a large and diverse catalog of
+            movies and a smaller scope that are of higher quality. It is not
+            realistically possible to have both approaches so companies should
+            consider which method they want to target more."
           )
         ),
         column(
@@ -253,35 +252,39 @@ ui <- fluidPage(
           h2("Age Ratings"),
           p(
             "Most streaming platforms curate a list of movies mainly geared
-                        towards adults, with the highest age ratings for 3 of the 4 streaming
-                        platforms being rated 18+.  The outlier to this trend is Disney+,
-                        whose highest curation is under the age rating ‘all.’ This implies
-                        that the main target audience of movie stream providers is adults,
-                        and that Disney is only an exception due to their entire brand mainly
-                        advertising towards families and children. This displays a huge disparity
-                        that startup streaming companies can utilize to their advantage
-                        through curating media for children. While there is high concentration
-                        — and by consequence, high competition— in the mature-rated market of
-                        film, there is an open field for children’s film, which can be quite
-                        lucrative."
+            towards adults, with the highest age ratings for 3 of the 4 streaming
+            platforms being rated 18+.  The outlier to this trend is Disney+,
+            whose highest curation is under the age rating ‘all.’ This implies
+            that the main target audience of movie stream providers is adults,
+            and that Disney is only an exception due to their entire brand mainly
+            advertising towards families and children. This displays a huge disparity
+            that startup streaming companies can utilize to their advantage
+            through curating media for children. While there is high concentration
+            — and by consequence, high competition— in the mature-rated market of
+            film, there is an open field for children’s film, which can be quite
+            lucrative."
           )
         ),
-        column(width = 4,
-               h2("Release Year"),
-               p("In 1914, one movie was released, and this was the earliest year 
-                 for which there was only one movie. The years following 1914 
-                 have the least movies, with an increase starting from 1990. Only 
-                 Prime Video seems to carry these earlier movies. In 2019 there 
-                 were 1014 movies released across all streaming services, which 
-                 is the maximum amount of movies released in a year. Streaming 
-                 services carry more newer movies than old movies. This trend could 
-                 be explained by the fact that most movies watched are newer 
-                 movies, which could be more popular among consumers. These 
-                 statistics are helpful for finding which streaming service has 
-                 the most options. This data can also help a startup company 
-                 decide which years’ movies to focus on, as more availability 
-                 for that year across platforms could indicate increased demand 
-                 for movies released that year."))
+        column(
+          width = 4,
+          h2("Release Year"),
+          p(
+            "In 1914, one movie was released, and this was the earliest year
+             for which there was only one movie. The years following 1914
+             have the least movies, with an increase starting from 1990. Only
+             Prime Video seems to carry these earlier movies. In 2019 there
+             were 1014 movies released across all streaming services, which
+             is the maximum amount of movies released in a year. Streaming
+             services carry more newer movies than old movies. This trend could
+             be explained by the fact that most movies watched are newer
+             movies, which could be more popular among consumers. These
+             statistics are helpful for finding which streaming service has
+             the most options. This data can also help a startup company
+             decide which years’ movies to focus on, as more availability
+             for that year across platforms could indicate increased demand
+             for movies released that year."
+          )
+        )
       ),
       # close fluidRow
       
@@ -317,7 +320,8 @@ server <- function(input, output) {
   ## Movie Ratings by Streaming Service
   output$ratings_plot <- renderPlot({
     # Clean Rotten Tomatoes ratings
-    streaming$modified_ratings <- as.numeric(str_remove(streaming$`Rotten Tomatoes`, "/100"))
+    streaming$modified_ratings <-
+      as.numeric(str_remove(streaming$`Rotten Tomatoes`, "/100"))
     
     # Draw histogram for amount of movies for each rating for the inputted platform
     streaming %>%
