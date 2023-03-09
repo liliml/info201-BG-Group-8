@@ -112,6 +112,14 @@ ui <- fluidPage(
           color scale on the bins are another way to depict the ratings. Green
           corresponds to higher ratings while red are lower ratings."
         ),
+        p("There is a trend with larger movie catalogs and greater diversity of
+            ratings. The services with a larger movie catalog have more movies with
+            lower ratings (skewed to the right), while the smaller catalogs lean more
+            towards the higher end, despite their narrow range of diverse ratings. It
+            is possible that Hulu and Disney+ are more selective with what movies
+            are on their catalog, hence why there are less movies but have higher
+            Rotten Tomatoes ratings, while Netflix and Prime Video’s approach is
+            having many movies of all ratings."),
         selectInput(
           "rating_service",
           "Streaming service:",
@@ -233,14 +241,7 @@ ui <- fluidPage(
           width = 4,
           h2("Rotten Tomato Ratings"),
           p(
-            "There is a trend with larger movie catalogs and greater diversity of
-            ratings. The services with a larger movie catalog have more movies with
-            lower ratings (skewed to the right), while the smaller catalogs lean more
-            towards the higher end, despite their narrow range of diverse ratings. It
-            is possible that Hulu and Disney+ are more selective with what movies
-            are on their catalog, hence why there are less movies but have higher
-            Rotten Tomatoes ratings, while Netflix and Prime Video’s approach is
-            having many movies of all types. For start up companies, it's important
+            "For start up companies, it's important
             to recognize the balance between having a large and diverse catalog of
             movies and a smaller scope that are of higher quality. It is not
             realistically possible to have both approaches so companies should
@@ -332,7 +333,7 @@ server <- function(input, output) {
       scale_fill_gradient(low = "red", high = "green") +
       labs(
         title = input$rating_service,
-        x = "Rotten Tomatoes Rating",
+        x = "Rotten Tomatoes Rating (Points)",
         y = 'Movie count',
         fill = "Ratings"
       )
