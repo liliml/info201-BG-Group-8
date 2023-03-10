@@ -179,7 +179,7 @@ ui <- fluidPage(
       "Release Year",
       titlePanel("Movies Per Streaming Service Per Year"),
       sidebarLayout(
-        sidebarPanel(
+        sidebarPanel(width = 6,
           p(
             "The bar plot below shows the amount of movies per year
             that are availiable on each streaming service.
@@ -220,7 +220,7 @@ ui <- fluidPage(
           ),
           uiOutput("choosenYearandServices")
         ),
-        mainPanel(plotOutput("year_plot"))
+        mainPanel(width = 6, plotOutput("year_plot"))
       )
     ),
     # close Movies Per Streaming Service per Year
