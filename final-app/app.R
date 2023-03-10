@@ -334,11 +334,12 @@ server <- function(input, output) {
       geom_bar(stat = "count", aes(fill = after_stat(x))) +
       scale_fill_gradient(low = "red", high = "green") +
       labs(
-        title = input$rating_service,
+        title = "Streaming service Movie Ratings Distribution",
         x = "Rotten Tomatoes Rating (Points)",
         y = 'Movie count',
         fill = "Ratings"
-      )
+      )+
+      theme(plot.title = element_text(face="bold"))
   })
   ## END Movie Ratings by Streaming Service
   
