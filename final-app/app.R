@@ -190,10 +190,23 @@ ui <- fluidPage(
             streaming services may carry the same movie, so the total amount of 
             movies released in a year may differ from the total when the values 
             of Netflix, Hulu, Prime Video, and Disney+ are summed up."
-          ),
+          ), 
+          p("In 1914, one movie was released, and this was the earliest year for 
+          which there was only one movie. The years following 1914 have the least 
+          movies, with an increase starting from 1990. Only Prime Video seems to 
+          carry these earlier movies. In 2019 there were 1014 movies released 
+          across all streaming services, which is the maximum amount of movies 
+          released in a year. Streaming services tend to carry more newer movies 
+          compared to old movies. This trend could be explained by the fact that 
+          most movies watched are newer movies, which could be more popular among 
+          consumers. These statistics are helpful for finding which streaming service 
+          has the most options. This data can also help a startup company decide 
+          which years’ movies to focus on, as more availability for that year across 
+          platforms could indicate increased demand for movies released that year.
+          "),
           sliderInput(
             "year",
-            "Year:",
+            "Movie Release Year:",
             min = min(streaming$Year),
             max = max(streaming$Year),
             2004,
