@@ -109,6 +109,7 @@ server <- function(input, output) {
     
     ageDemo <- stream %>%
       filter(Age != "NA") %>% 
+      arrange(Age) %>% 
       filter(!!rlang::sym(service) == 1)
     
     ggplot(ageDemo, aes(fill = as.factor(Age))) +
@@ -125,6 +126,7 @@ server <- function(input, output) {
     
     ageDemo <- stream %>%
       filter(Age != "NA") %>% 
+      arrange(Age) %>% 
       filter(!!rlang::sym(service) == 1)
     
     paste("This is a plot output of the number of movies in each age demographic

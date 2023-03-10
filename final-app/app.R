@@ -349,6 +349,8 @@ server <- function(input, output) {
       filter(Age != "NA") %>%
       filter(!!rlang::sym(input$platform_service) == 1)
     
+    ageDemo$Age <- factor(ageDemo$Age, levels = c("all", "7+", "13+", "16+", "18+"))
+    
     ggplot(ageDemo, aes(fill = as.factor(Age))) +
       geom_bar(
         mapping = aes(x = ageDemo$Age),
